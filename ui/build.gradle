@@ -2,8 +2,6 @@ apply plugin: 'war'
 apply plugin: 'jetty'
 
 dependencies {
-    compile project(':service')
-    compile module("commons-lang:commons-lang:2.4") {
-        dependency("commons-io:commons-io:1.2")
-    }
+
+    
 }
