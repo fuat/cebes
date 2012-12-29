@@ -1,47 +1,77 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'jetty'
-
 description = 'Cesar Markt Handel Verwaltungs und Bestellsystem'
-sourceCompatibility = 1.6
-
-group = 'de.cesar.portal'
-version = '0.0.1-SNAPSHOT'
 
 ext {
     jettyVersion = '7.4.0.v20110414'
     springVersion = '3.2.0.RELEASE'
 }
 
-repositories {
-   mavenCentral()
+allprojects {
+    task hello << { task -> println "I'm $task.project.name" }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+
+    sourceCompatibility = 1.6
+
+    group = 'de.cesar.portal'
+    version = '0.0.1-SNAPSHOT'
+
+    dependencies {
+        testCompile 'junit:junit:4.8.2'
+    }
+
+    repositories {
+        //mavenLocal()
+        mavenCentral()
+    }
 }
 
 List spring = [
-    'org.springframework:spring-context:' + springVersion,
-    'org.springframework:spring-web:' + springVersion
+        'org.springframework:spring-context:' + springVersion,
+        'org.springframework:spring-web:' + springVersion
 ]
 
 List jetty = [
-    'org.eclipse.jetty:jetty-server:' + jettyVersion,
-    'org.eclipse.jetty:jetty-ajp:' + jettyVersion,
-    'org.eclipse.jetty:jetty-webapp:' + jettyVersion,
-    'org.eclipse.jetty:jetty-util:' + jettyVersion,
-    'org.eclipse.jetty:jetty-plus:' + jettyVersion
+        'org.eclipse.jetty:jetty-server:' + jettyVersion,
+        'org.eclipse.jetty:jetty-ajp:' + jettyVersion,
+        'org.eclipse.jetty:jetty-webapp:' + jettyVersion,
+        'org.eclipse.jetty:jetty-util:' + jettyVersion,
+        'org.eclipse.jetty:jetty-plus:' + jettyVersion
 ]
 
-dependencies {
-    compile spring
-    compile 'org.apache.wicket:wicket:6.1.0'
-    testCompile 'javax.servlet:servlet-api:2.0'
-    testCompile 'junit:junit:4.8.2'
-    testCompile jetty
+project(':domain') {
+
 }
 
-jar {
-    manifest {
-        attributes provider: 'gradle'
+project(':repository') {
+    dependencies {
+        compile project(':domain')
+        compile spring
+    }
+}
+
+project(':service') {
+    dependencies {
+        compile project(':domain')
+        compile project(':repository')
+        compile spring
+    }
+}
+
+project(':ui') {
+    apply plugin: 'war'
+    apply plugin: 'jetty'
+
+
+    dependencies {
+        compile project(':service')
+        compile spring
+        compile 'org.apache.wicket:wicket:6.4.0'
+        compile 'org.apache.wicket:wicket-spring:6.4.0'
+        testCompile 'javax.servlet:servlet-api:2.0'
+        testCompile jetty
     }
 }

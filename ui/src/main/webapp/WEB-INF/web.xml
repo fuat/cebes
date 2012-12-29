@@ -12,7 +12,8 @@
         </param-value>
 	</context-param>
 
-	<context-param>
+	<!--
+    <context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>classpath:log4j-cindy.xml</param-value>
 	</context-param>
@@ -24,7 +25,7 @@
 		<param-name>log4jExposeWebAppRoot</param-name>
 		<param-value>false</param-value>
 	</context-param>
-
+    -->
 	<filter>
 		<filter-name>wicket.cesar.portal</filter-name>
 		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
