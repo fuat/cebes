@@ -4,26 +4,44 @@ apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'jetty'
 
-group = 'de.cebes'
+description = 'Cesar Markt Handel Verwaltungs und Bestellsystem'
+sourceCompatibility = 1.6
+
+group = 'de.cesar.portal'
 version = '0.0.1-SNAPSHOT'
+
+ext {
+    jettyVersion = '7.4.0.v20110414'
+    springVersion = '3.2.0.RELEASE'
+}
 
 repositories {
    mavenCentral()
 }
 
+List spring = [
+    'org.springframework:spring-context:' + springVersion,
+    'org.springframework:spring-web:' + springVersion
+]
+
+List jetty = [
+    'org.eclipse.jetty:jetty-server:' + jettyVersion,
+    'org.eclipse.jetty:jetty-ajp:' + jettyVersion,
+    'org.eclipse.jetty:jetty-webapp:' + jettyVersion,
+    'org.eclipse.jetty:jetty-util:' + jettyVersion,
+    'org.eclipse.jetty:jetty-plus:' + jettyVersion
+]
+
 dependencies {
-    compile 'org.springframework:spring-context:3.2.0.RELEASE'
-    compile 'org.springframework:spring-web:3.2.0.RELEASE'
+    compile spring
     compile 'org.apache.wicket:wicket:6.1.0'
     testCompile 'javax.servlet:servlet-api:2.0'
     testCompile 'junit:junit:4.8.2'
-    testCompile 'org.eclipse.jetty:jetty-server:7.4.0.v20110414'
-    testCompile 'org.eclipse.jetty:jetty-ajp:7.4.0.v20110414'
-    testCompile 'org.eclipse.jetty:jetty-webapp:7.4.0.v20110414'
-    testCompile 'org.eclipse.jetty:jetty-util:7.4.0.v20110414'
-    testCompile 'org.eclipse.jetty:jetty-plus:7.4.0.v20110414'
+    testCompile jetty
 }
 
 jar {
-    manifest.attributes provider: 'gradle'
+    manifest {
+        attributes provider: 'gradle'
+    }
 }
